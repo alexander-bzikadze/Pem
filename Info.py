@@ -23,7 +23,9 @@ class InfoCommand(sublime_plugin.TextCommand):
 		infoFile.close()
 
 	def infoFileCreation(self, infoFileName):
-		open(infoFileName, 'w').write("-1")
+		file = open(infoFileName, 'w')
+		file.write("-1")
+		file.close()
 
 	def infoFileCorrectnessCheck(self, infoFileName):
 		infoFile = open(infoFileName, 'r')
@@ -34,7 +36,7 @@ class InfoCommand(sublime_plugin.TextCommand):
 		if len(lines) > n + 1 and n != -1:
 			return -2
 		for i in range(1, n):
-			if len(lines[i]) != 2:
+			if len(lines[i].split()) != 2:
 				return i
 		infoFile.close()
 		return -1
