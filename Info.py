@@ -4,7 +4,7 @@ class InfoCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		infoFileName = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
 
-		if not os.path.isfile(infoFileName):
+		if (os.path.isfile(infoFileName) != True) or (os.stat(infoFileName).st_size == 0):
 			self.infoFileCreation(infoFileName)
 
 		if not (int(self.infoFileCorrectnessCheck(infoFileName)) == -1):
