@@ -13,12 +13,9 @@ class InfoCommand(sublime_plugin.TextCommand):
 
 		infoFile = open(infoFileName, 'r')
 
-		lines = infoFile.readlines()
-		n = int(lines[0])
-		if n != -1:
-			print(lines[n])
-		else:
-			print("No project is active now.")
+		line = infoFile.readline()
+		info = line.split()
+		print(info[1] + " " + info[2])
 
 		infoFile.close()
 
@@ -30,9 +27,13 @@ class InfoCommand(sublime_plugin.TextCommand):
 	def infoFileCorrectnessCheck(self, infoFileName):
 		infoFile = open(infoFileName, 'r')
 		lines = infoFile.readlines()
-		if len(lines[0].split()) > 1:
-			return 0
-		n = int(lines[0])
+		if (len(lines[0].split()) != 3) or (len(lines[0].split()) == 1):
+			if (lines[0].isdigit()):
+				if int(lines[0]) != -1:
+					return 0
+			else:
+				return 0;
+		n = int(lines[0].split()[0])
 		if len(lines) > n + 1 and n != -1:
 			return -2
 		for i in range(1, n):
