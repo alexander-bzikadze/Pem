@@ -16,9 +16,10 @@ class SwitchProjectCommand(sublime_plugin.TextCommand):
 		else:
 			print("Info-file not found.")
 
-		lines[0] = str(pos + 1) + "\n"
+		lines[0] = str(pos + 1) + " " + lines[pos + 1]
 		file.close()
 
 		file = open(infoFileName, 'w')
 		file.writelines(lines)
 		file.close()
+
