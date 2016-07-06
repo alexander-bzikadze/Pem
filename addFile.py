@@ -25,7 +25,6 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		infoFile.close()
 		if (len(line.split()) != 3) or (not line.split()[0].isdigit()) or (line.split()[0] == "-1"):
 			print("Project is not selected.")
-			print (len(line.split()) != 3)
 			return 0
 		projectName = line.split()[1]
 		projectPath = os.path.join(line.split()[2], projectName + extension)
