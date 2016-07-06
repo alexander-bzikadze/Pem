@@ -1,7 +1,7 @@
 import sublime, sublime_plugin, os
 
 class CreateProjectCommand(sublime_plugin.TextCommand):
-	def run(self, edit, name, path = os.getcwd()):
+	def run(self, edit, name, path = os.path.expanduser('~/')):
 		infoFileName = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
 		if (os.path.isfile(infoFileName) != True) or (os.stat(infoFileName).st_size == 0):
 			self.infoFileCreation(infoFileName)
@@ -23,7 +23,7 @@ class CreateProjectCommand(sublime_plugin.TextCommand):
 		lines = file.readlines()
 		file.close()
 
-		lines[0] = str(len(lines)) + "\n"
+		lines[0] = str(len(lines)) + " " + str(name + " " + path) + "\n"
 		lines.append(str(name + " " + path) + "\n")
 
 		file = open(infoFileName, "w")
