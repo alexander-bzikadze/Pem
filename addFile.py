@@ -14,7 +14,6 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		if (os.path.isfile(infoFileName) != True) or (os.stat(infoFileName).st_size == 0):
 			self.infoFileCreation(infoFileName)
 
-		infoFileName = os.path.join(infoFileName)
 		if not os.path.isfile(infoFileName):
 			print("Info-file not found.")
 			return 0
