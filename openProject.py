@@ -6,16 +6,21 @@ ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), 
 extension = ".pem"
 csextension = ".cs"
 
-class OpenFileCommand(sublime_plugin.TextCommand):
+class OpenProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
 		cT = ct.CorrectnessTests(infoFilePath)
 		cT.infoFileExistence()
 
+		self.view.run_command("switch_project", {"name" : name})
+
 		infoFile = open(infoFilePath, 'r')
 		line = infoFile.readline()
 		infoFile.close()
 
+		if not name in line:
+			print ("No such project.")
+			return 0
 		if cT.projectSelection():
 			print("Project is not selected.")
 			return 0
@@ -27,8 +32,6 @@ class OpenFileCommand(sublime_plugin.TextCommand):
 		projectPath = os.path.join(line.split()[2], projectName + extension)
 		projectFile = open(projectPath, 'r')
 		lines = projectFile.readlines()
-		if ('\t' + name + '\n' in lines) and (lines.index("source:\n") < lines.index('\t' + name + '\n')):
-			self.view.window().open_file(name + csextension, sublime.ENCODED_POSITION)
-		else:
-			print("Project does not contain such a file.")
+		for i in range(lines.index("source:\n") + 1, len(lines)):
+			self.view.run_command("open_file", {"name" : lines[i][1: len(lines[i]) - 1]})
 		projectFile.close()
