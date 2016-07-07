@@ -38,8 +38,12 @@ class DeleteProjectCommand(sublime_plugin.TextCommand):
 		os.remove(projectPath)
 		infoFile = open(infoFilePath, 'r')
 		infoLines = infoFile.readlines()
-		infoLines[0] = str(-1) + '\n'
 		infoFile.close()
+
+		n = int(infoLines[0].split()[0])
+		infoLines.pop(n)
+		infoLines[0] = str(-1) + '\n'
+
 		infoFile = open(infoFilePath, 'w')
 		infoFile.writelines(infoLines)
 		infoFile.close()
