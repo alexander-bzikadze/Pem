@@ -27,7 +27,6 @@ class OpenFileCommand(sublime_plugin.TextCommand):
 		projectPath = os.path.join(line.split()[2], projectName + extension)
 		projectFile = open(projectPath, 'r')
 		lines = projectFile.readlines()
-		print (lines)
 		if ('\t' + name + '\n' in lines) and (lines.index("source:\n") < lines.index('\t' + name + '\n')):
 			self.view.window().open_file(name + csextension, sublime.ENCODED_POSITION)
 		projectFile.close()
