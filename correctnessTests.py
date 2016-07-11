@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
-import os
+import sublime, sublime_plugin, os
 
 extension = ".pem"
 
 class CorrectnessTests:
-	def __init__(self, infoFilePath):
-		self.__infoFilePath = infoFilePath
+	__infoFilePath = ""
 
-	__infoFilePath = " "
+	def __init__(self):
+		self.__infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
 
 	def infoFileExistence(self):
 		if (os.path.isfile(self.__infoFilePath) != True) or (os.stat(self.__infoFilePath).st_size == 0):
@@ -27,14 +27,12 @@ class CorrectnessTests:
 		infoFile.close()
 		return not ((len(line.split()) == 3) and (line.split()[0].isdigit()) and (int(line.split()[0]) > 0))
 
-	def projectFileExistence(self, line):
-		projectName = line.split()[1]
-		projectPath = os.path.join(line.split()[2], projectName + extension)
+	def projectFileExistence(self, projectName, projectDir):
+		projectPath = os.path.join(projectDir, projectName + extension)
 		return not (os.path.isfile(projectPath) or os.stat(projectPath).st_size == 0)
 
-	def projectFileCorrectness(self, line):
-		projectName = line.split()[1]
-		projectPath = os.path.join(line.split()[2], projectName + extension)
+	def projectFileCorrectness(self, projectName, projectDir):
+		projectPath = os.path.join(projectDir, projectName + extension)
 		projectFile = open(projectPath, 'r')
 		lines = projectFile.readlines()
 		projectFile.close()
@@ -46,8 +44,8 @@ class CorrectnessTests:
 			return 3
 		return 0
 
-	def fileExistence(self, filePath):
-		return os.path.isfile(filePath)
+	def fileExistence(self, fileName, filePath):
+		return os.path.isfile(os.path.join(filePath, fileName))
 
 	def infoFileCorrectnessLite(self):
 		infoFile = open(self.__infoFilePath, 'r')
@@ -60,7 +58,7 @@ class CorrectnessTests:
 					return 0
 				return 1
 			return 2
-		elif len(line == 3):
+		elif len(line) == 3:
 			if line[0].isdigit():
 				n = int(line[0])
 				for i in range(1, n):

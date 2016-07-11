@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import os
+import sublime, sublime_plugin, os
 
 from importlib.machinery import SourceFileLoader
 ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
@@ -16,7 +16,7 @@ class InfoReader:
 
 	def __init__(self):
 		self.__infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", self.__infoFileName)
-		cT = ct.CorrectnessTests(self.__infoFilePath)
+		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
 		infoFile = open(self.__infoFilePath, 'r')
