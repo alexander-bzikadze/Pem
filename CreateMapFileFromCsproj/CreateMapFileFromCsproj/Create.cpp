@@ -4,7 +4,7 @@
 
 using namespace std;
 
-string getInformationFromText(string findString, string seacrhFraze, int p)
+string getInformationFromText(string findString, string seacrhFraze, int step) // get from string namwe of file and library which use in project
 {
 	string output;
 	for (int i = 0; i < findString.size() - 3; ++i)
@@ -12,7 +12,7 @@ string getInformationFromText(string findString, string seacrhFraze, int p)
 		if (findString[i] == seacrhFraze[0] && findString[i + 1] == seacrhFraze[1]
 			&& findString[i + 2] == seacrhFraze[2] && findString[i + 3] == seacrhFraze[3])
 		{
-			i += p;
+			i += step;
 			while (findString[i] != '"')
 			{
 				output += findString[i];
@@ -23,7 +23,7 @@ string getInformationFromText(string findString, string seacrhFraze, int p)
 	return output;
 }
 
-void convertFromCsprojToPem(char *wayTofile)
+void convertFromCsprojToPem(char *wayTofile) //read file (project name).csproj and write information from this file to file (project name).pem
 {
 	ifstream file(wayTofile, ios::in);
 	if (!file.is_open())
