@@ -29,7 +29,9 @@ class CorrectnessTests:
 
 	def projectFileExistence(self, projectName, projectDir):
 		projectPath = os.path.join(projectDir, projectName + extension)
-		return not (os.path.isfile(projectPath) or os.stat(projectPath).st_size == 0)
+		if os.path.isfile(projectPath):
+			return os.stat(projectPath).st_size == 0
+		return not (os.path.isfile(projectPath))
 
 	def projectFileCorrectness(self, projectName, projectDir):
 		projectPath = os.path.join(projectDir, projectName + extension)
@@ -53,13 +55,9 @@ class CorrectnessTests:
 		line = lines[0].split()
 		infoFile.close()
 		if len(line) == 1:
-			if line.isdigit():
-				if int(line) == -1:
-					return 0
-				return 1
-			return 2
+			return str(line) != "-1"
 		elif len(line) == 3:
-			if line[0].isdigit():
+			if str(line[0]).isdigit():
 				n = int(line[0])
 				for i in range(1, n):
 					if len(lines[i].split()) != 2:
@@ -76,7 +74,7 @@ class CorrectnessTests:
 		projectsThatDoesNotExist = []
 		if (self.infoFileCorrectnessLite()):
 			return self.infoFileCorrectnessLite()
-		if line[0].isdigit():
+		if str(lines[0].split()[0]).isdigit():
 			for i in range(1, len(lines)):
 				if len(lines[i].split()) != 2:
 					linesWithFails += i
