@@ -8,36 +8,38 @@ Exceptions = SourceFileLoader("Exceptions", os.path.join(sublime.packages_path()
 
 class InfoReader:
 	__infoFileName = "Info.txt"
-	__infoFilePath = " "
-	__currecntProject = " "
-	__currecntProjectPath = " "
+	__infoFilePath = ""
+	__currentProject = ""
+	__currentProjectPath = ""
 	__projects = []
 	__projectPaths = []
 
 	def __init__(self):
 		self.__infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", self.__infoFileName)
-		cT = ct.CorrectnessTests(infoFilePath)
+		cT = ct.CorrectnessTests(self.__infoFilePath)
 		cT.infoFileExistence()
 
-		infoFile = open(infoFilePath, 'r')
+		infoFile = open(self.__infoFilePath, 'r')
 		lines = infoFile.readlines()
 		infoFile.close()
 
-		if line.split() != 1:
-			self.__currecntProject = line[0].split()[1]
-			self.__currecntProjectPath = line[0].split()[2]
-		self.__projects = [line.split()[1] for line in lines]
-		self.__projectPaths = [line.split()[2] for line in lines]
+		if len(lines[0].split()) != 1:
+			self.__currentProject = lines[0].split()[1]
+			self.__currentProjectPath = lines[0].split()[2]
+		lines.pop(0)
+		self.__projects = [line.split()[0] for line in lines]
+		self.__projectPaths = [line.split()[1] for line in lines]
 
-	def getCurrecntProject(self):
-		if __currecntProject == " ":
-			raise projectNotSelectedException("No project selected.")
-		return self.__currecntProject
+	def getCurrentProject(self):
+		if not self.__currentProject:
+			print(self.__currentProject)
+			raise Exceptions.ProjectNotSelectedException("No project selected.")
+		return self.__currentProject
 
 	def getCurrentProjectPath(self):
-		if __currecntProjectPath == " ":
-			raise projectNotSelectedException("No project selected.")
-		return self.__currecntProjectPath
+		if not self.__currentProjectPath:
+			raise Exceptions.ProjectNotSelectedException("No project selected.")
+		return self.__currentProjectPath
 
 	def getProjects(self):
 		return self.__projects
