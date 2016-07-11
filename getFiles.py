@@ -2,31 +2,27 @@ import sublime, sublime_plugin, os
 
 from importlib.machinery import SourceFileLoader
 ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
+ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
 
 extension = ".pem"
 
 class GetFilesCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
-		cT = ct.CorrectnessTests(infoFilePath)
+		info = ir.InfoReader()
+		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
-
-		infoFile = open(infoFilePath, 'r')
-		line = infoFile.readline()
-		infoFile.close()
 
 		if cT.projectSelection():
 			print("Project is not selected.")
 			return 0
-		if cT.projectFileExistence(line):
+		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
 			print("Project file not found or it is empty.")
 			return 0
-		if cT.projectFileCorrectness(line):
-			print("Project file is not correst.")
+		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
+			print("Project file is not correct.")
 			return 0
 
-		projectName = line.split()[1]
-		projectPath = os.path.join(line.split()[2], projectName + extension)
+		projectPath = os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + extension)
 		projectFile = open(projectPath, 'r')
 		lines = projectFile.readlines()
 		projectFile.close()
