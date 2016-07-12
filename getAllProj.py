@@ -9,7 +9,7 @@ class GetAllProjCommand(sublime_plugin.TextCommand):
 		info = ir.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
-		if cT.infoFileCorrectnessHard:
+		if cT.infoFileCorrectnessHard():
 			print("Prepare yourself. Incorrect info-file is coming.")
 
 		for project in info.getProjects():

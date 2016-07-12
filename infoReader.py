@@ -23,7 +23,7 @@ class InfoReader:
 		lines = infoFile.readlines()
 		infoFile.close()
 
-		if len(lines[0].split()) != 1:
+		if len(lines[0].split()) == 3:
 			self.__currentProject = lines[0].split()[1]
 			self.__currentProjectPath = lines[0].split()[2]
 		lines.pop(0)
@@ -46,4 +46,7 @@ class InfoReader:
 
 	def getProjectPaths(self):
 		return self.__projectPaths
+
+	def getProjectNumber(self, name):
+		return self.__projects.index(name)
 

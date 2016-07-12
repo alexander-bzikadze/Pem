@@ -3,6 +3,7 @@ import sublime, sublime_plugin, os
 from importlib.machinery import SourceFileLoader
 ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
 ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
+pr = SourceFileLoader("ProjectReader", os.path.join(sublime.packages_path(), "User", "projectReader.py")).load_module()
 
 extension = ".pem"
 
@@ -22,9 +23,6 @@ class GetFilesCommand(sublime_plugin.TextCommand):
 			print("Project file is not correct.")
 			return 0
 
-		projectPath = os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + extension)
-		projectFile = open(projectPath, 'r')
-		lines = projectFile.readlines()
-		projectFile.close()
-		for i in range(lines.index("source:\n") + 1, len(lines)):
-			print(lines[i][0 : len(lines[i]) - 1])
+		projectReader = pr.ProjectReader()
+		for file in projectReader.getSource():
+			print(file)
