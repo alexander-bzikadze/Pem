@@ -6,9 +6,7 @@ ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), 
 ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
 pr = SourceFileLoader("ProjectReader", os.path.join(sublime.packages_path(), "User", "projectReader.py")).load_module()
 
-csextension = ".cs"
-
-class CompileProjectCommand(sublime_plugin.TextCommand):
+class RunProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		info = ir.InfoReader()
 		cT = ct.CorrectnessTests()
@@ -23,19 +21,17 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
 			print("Project file is not correct.")
 			return 0
+		if not cT.fileExistence(info.getCurrentProject() + ".exe", info.getCurrentProjectPath()):
+			print("No .exe to run.")
+			return 0
 
 		projectReader = pr.ProjectReader()
 		makefile = open(os.path.join(info.getCurrentProjectPath(), "Makefile"), 'w')
 		makefile.write("all:\n")
-		makefile.write("\tcd " + info.getCurrentProjectPath() + '\n')
-		makefile.write("\tmcs")
-		for file in projectReader.getSource():
-			makefile.write(" " + file + csextension)
-		makefile.write(" -target:exe -out:" + info.getCurrentProject() + ".exe\n")
-		makefile.write('\n')
+		makefile.write("\tmono " + os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + ".exe"))
 		makefile.close()
-		make_process = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-		print(make_process.communicate())
+		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+		print(makeProcess.communicate())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
 
 
