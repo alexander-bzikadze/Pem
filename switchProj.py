@@ -3,6 +3,8 @@ import sublime, sublime_plugin, os
 from importlib.machinery import SourceFileLoader
 ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
 ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
+iw = SourceFileLoader("InfoWriter", os.path.join(sublime.packages_path(), "User", "infoWriter.py")).load_module()
+Exceptions = SourceFileLoader("Exceptions", os.path.join(sublime.packages_path(), "User", "projectNotSelectedException.py")).load_module()
 
 class SwitchProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
@@ -10,20 +12,14 @@ class SwitchProjectCommand(sublime_plugin.TextCommand):
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
-		file = open(infoFilePath, 'r')
-		lines = file.readlines()
-		file.close()
-		pos = 0
-		projectNames = [i.split()[0] for i in lines]
-		projectNames.pop(0)
-		if name in projectNames:
-			pos = projectNames.index(name)
-		else:
-			print("Project not found.")
-			return 0
-		lines[0] = str(pos + 1) + " " + lines[pos + 1]
-
-		file = open(infoFilePath, 'w')
-		file.writelines(lines)
-		file.close()
-
+		infoReader = ir.InfoReader()
+		infoWriter = iw.InfoWriter()
+		try:
+			if name == infoReader.getCurrentProject():
+				return
+		except Exceptions.ProjectNotSelectedException:
+			a = 3
+		try:
+			infoWriter.switchProject(infoReader.getProjectNumber(name))
+		except ValueError:
+			print("No such project", name, ".")

@@ -79,7 +79,7 @@ class CorrectnessTests:
 				if len(lines[i].split()) != 2:
 					linesWithFails += i
 				else:
-					if self.projectFileExistence(lines[i]):
+					if self.projectFileExistence(lines[i].split()[0], lines[i].split()[1]):
 						projectsThatDoesNotExist += i
 		if (len(linesWithFails)):
 			return 5
