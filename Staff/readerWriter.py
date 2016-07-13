@@ -95,14 +95,14 @@ class InfoWriter:
 		lines = file.readlines()
 		file.close()
 
-		if number < len(lines) - 1 and number >= 0:
-			lines[0] = " ".join([str(number + 1), self.info.getProjects()[number], info.getProjectPaths()[number], '\n'])
+		if number == -1:
+			lines[0] = "-1\n"
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()
 			return 0
-		elif number == -1:
-			lines[0] = "-1\n"
+		elif number < len(lines) - 1 and number >= 0:
+			lines[0] = " ".join([str(number + 1), info.getProjects()[number], info.getProjectPaths()[number], '\n'])
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()

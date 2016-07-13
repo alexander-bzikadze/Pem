@@ -17,7 +17,10 @@ class SwitchProjectCommand(sublime_plugin.TextCommand):
 				return
 		except Exceptions.ProjectNotSelectedException:
 			a = 3
-		try:
-			infoWriter.switchProject(infoReader.getProjectNumber(name))
-		except Exceptions.ProjectAbsenceInInfofile:
-			print("No such project", name, ".")
+		if name == "-1":
+			infoWriter.switchProject(-1)
+		else:
+			try:
+				infoWriter.switchProject(infoReader.getProjectNumber(name))
+			except Exceptions.ProjectAbsenceInInfofile:
+				print("No such project", name, ".")

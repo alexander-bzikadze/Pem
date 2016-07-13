@@ -26,7 +26,7 @@ class AddFileCommand(sublime_plugin.TextCommand):
 			print("File already exists.")
 			return 0
 
-		projectWriter = pr.ProjectWriter()
+		projectWriter = rw.ProjectWriter()
 		if projectWriter.addFile(name):
 			print("File is already in the project.")
 			return 0

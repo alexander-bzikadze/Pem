@@ -18,7 +18,7 @@ class CorrectnessTests:
 
 	def __infoFileCreation(self):
 		infoFile = open(self.__infoFilePath, 'w')
-		infoFile.write("-1")
+		infoFile.write("-1\n")
 		infoFile.close()
 
 	def projectSelection(self):
