@@ -25,13 +25,12 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		if cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
 			print("File already exists.")
 			return 0
-
 		projectWriter = rw.ProjectWriter()
 		if projectWriter.addFile(name):
 			print("File is already in the project.")
 			return 0
-
-		filePath = os.path.join(info.getCurrentProjectPath(), name + csextension)
+			
+		filePath = os.path.join(os.path.expanduser('~'), info.getCurrentProjectPath(), name + csextension)
 		file = open(filePath, 'w')
 		namespace = info.getCurrentProject()
 		file.write("using System;\nusing System.Collections.Generic;\n")

@@ -171,7 +171,7 @@ class ProjectWriter:
 			projectFile = open(projectPath, 'w')
 			projectFile.writelines(lines)
 			projectFile.close()
-			project = pr.ProjectReader()
+			project = ProjectReader()
 			return 0
 		return 1
 
