@@ -19,6 +19,9 @@ class OpenFileCommand(sublime_plugin.TextCommand):
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
 			print("Project file not found or it is empty.")
 			return 0
+		if not cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
+			print("File to be opened not found.")
+			return 0
 
 		projectReader = rw.ProjectReader()
 		if name in projectReader.getSource():

@@ -8,6 +8,9 @@ extension = ".pem"
 
 class DeleteProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
+		if name == "-1":
+			print("Cannot delete nothing.")
+			return 0
 		self.view.run_command("switch_project", {"name" : name})
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()

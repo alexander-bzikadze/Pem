@@ -6,6 +6,9 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 
 class CreateProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name, path = os.path.expanduser('~')):
+		if name == "-1":
+			print("Cannot have a keyword -1 as a project name")
+			return 0
 		path = os.path.join(os.path.expanduser('~'), path)
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
@@ -26,5 +29,5 @@ class CreateProjectCommand(sublime_plugin.TextCommand):
 		projectFile = open(os.path.join(path, name) + ".pem", 'w')
 		projectFile.write("project_name = " + name + '\n\n')
 		projectFile.write("specification:" + "\n\n")
-		projectFile.write("source:" + "\n\n")
+		projectFile.write("source:" + "\n")
 		projectFile.close();
