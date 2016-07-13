@@ -2,13 +2,12 @@ import sublime, sublime_plugin, os
 import subprocess
 
 from importlib.machinery import SourceFileLoader
-ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
-ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
-pr = SourceFileLoader("ProjectReader", os.path.join(sublime.packages_path(), "User", "projectReader.py")).load_module()
+ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "Pem", "Staff", "correctnessTests.py")).load_module()
+rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 
 class RunProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		info = ir.InfoReader()
+		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
@@ -25,7 +24,6 @@ class RunProjectCommand(sublime_plugin.TextCommand):
 			print("No .exe to run.")
 			return 0
 
-		projectReader = pr.ProjectReader()
 		makefile = open(os.path.join(info.getCurrentProjectPath(), "Makefile"), 'w')
 		makefile.write("all:\n")
 		makefile.write("\tmono " + os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + ".exe"))

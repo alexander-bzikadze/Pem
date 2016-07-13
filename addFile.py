@@ -2,19 +2,14 @@ import sublime, sublime_plugin, os
 import subprocess
 
 from importlib.machinery import SourceFileLoader
-ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
-ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
-pr = SourceFileLoader("ProjectWriter", os.path.join(sublime.packages_path(), "User", "projectWriter.py")).load_module()
+ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "Pem", "Staff", "correctnessTests.py")).load_module()
+rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 
-extension = ".pem"
 csextension = ".cs"
-project_name = "project_name = "
-source = "source:"
-specification = "specification:"
 
 class AddFileCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
-		info = ir.InfoReader()
+		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
