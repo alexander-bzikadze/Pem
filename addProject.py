@@ -7,7 +7,7 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 csprojextension = ".csproj"
 
 class AddProjectCommand(sublime_plugin.TextCommand):
-	def __openCsprof(self, name, path):  
+	def __openCsprof(self, name, path = os.path.expanduser('~')):  
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 		if cT.infoFileCorrectnessLite():
@@ -19,9 +19,7 @@ class AddProjectCommand(sublime_plugin.TextCommand):
 		if cT.fileExistence(name + csprojextension, path):
 			if cT.projectFileExistence(name, path):					
 				csprojFile = open(wayTofile, 'r')
-				self.view.run_command("create_project", {"name" : name, "path" : path})
-				#pemFile.write("\n" + "Specification: " + "\n")
-				check = 0 			
+				self.view.run_command("create_project", {"name" : name, "path" : path})			
 				for line in csprojFile:
 					if len(line) > 27:
 						output = ""
@@ -32,7 +30,6 @@ class AddProjectCommand(sublime_plugin.TextCommand):
 								i = i + 1
 							#=pemFile.write("    " + output + "\n")
 						elif line[5] == "C" and line[6] == "o" and line[7] == "m" and line[8] == "p": 
-							#if check == 0: pemFile.write("\n" + "Source: " + "\n")
 							check = check + 1
 							i = 22
 							while line[i] != '.': 
@@ -58,10 +55,10 @@ class AddProjectCommand(sublime_plugin.TextCommand):
 			return 2
 		return 0
 
-	def run(self, edit, file):
+	def run(self, edit, file, path = os.path.expanduser('~')):
 		cT = ct.CorrectnessTests()
 		infoWriter = rw.InfoWriter()
-		if cT.fileExistence(file, os.path.join(sublime.packages_path(), "User")):
+		if cT.fileExistence(file, path):
 			typeFile = self.__getFileExtension(file)
 			name = ""
 			i = 0
@@ -69,9 +66,9 @@ class AddProjectCommand(sublime_plugin.TextCommand):
 				name = name + file[i] 
 				i = i + 1
 			if typeFile == 2:
-				self.__openCsprof(name, os.path.join(sublime.packages_path(), "User"))
+				self.__openCsprof(name, path)
 			elif typeFile == 1:
-				infoWriter.addProject(name, os.path.join(sublime.packages_path(), "User"))
+				infoWriter.addProject(name, path)
 			else:
 				print("Type of file is not correct")
 		else:
