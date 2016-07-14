@@ -1,18 +1,18 @@
 import sublime, sublime_plugin, os, subprocess
 
 from importlib.machinery import SourceFileLoader
-ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
-ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
-iw = SourceFileLoader("InfoWriter", os.path.join(sublime.packages_path(), "User", "infoWriter.py")).load_module()
-pr = SourceFileLoader("ProjectReader", os.path.join(sublime.packages_path(), "User", "projectReader.py")).load_module()
-pw = SourceFileLoader("ProjectWriter", os.path.join(sublime.packages_path(), "User", "projectWriter.py")).load_module()
+ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "Pem", "Staff", "correctnessTests.py")).load_module()
+rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 
 extension = ".pem"
 
 class DeleteProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
+		if name == "-1":
+			print("Cannot delete nothing.")
+			return 0
 		self.view.run_command("switch_project", {"name" : name})
-		info = ir.InfoReader()
+		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
@@ -26,10 +26,10 @@ class DeleteProjectCommand(sublime_plugin.TextCommand):
 			print("Project file not found or it is empty.")
 			return 0
 
-		projectReader = pr.ProjectReader()
+		projectReader = rw.ProjectReader()
 		for file in projectReader.getSource():
 			self.view.run_command("delete_file", {"name" : file})
 		os.remove(os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + extension))
-		infoWriter = iw.InfoWriter()
+		infoWriter = rw.InfoWriter()
 		infoWriter.deleteProject(info.getProjectNumber(info.getCurrentProject()))
 		infoWriter.switchProject(-1)

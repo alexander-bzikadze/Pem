@@ -1,0 +1,54 @@
+[
+	{
+		"caption" : "Pem : Add file to Current Project",
+		"command": "add_file"
+	},
+	{
+		"caption" : "Pem : Get information of Current Project",
+		"command": "info"
+	},
+	{
+		"caption" : "Pem : Compile Current Project",
+		"command": "compile_project"
+	},
+	{
+		"caption" : "Pem : Create new Project",
+		"command": "create_project"
+	},
+	{
+		"caption" : "Pem : Delete a file from Current Project",
+		"command": "delete_file"
+	},
+	{
+		"caption" : "Pem : Delete a Project",
+		"command": "delete_project"
+	},
+	{
+		"caption" : "Pem : Get all Project names",
+		"command": "get_all_proj"
+	},
+	{
+		"caption" : "Pem : Get all files from Current Project",
+		"command": "get_files"
+	},
+	{
+		"caption" : "Pem : Open file from Current Project",
+		"command": "open_file"
+	},
+	{
+		"caption" : "Pem : Open a Project",
+		"command": "open_project"
+	},
+	{
+		"caption" : "Pem : Run Current Project",
+		"command": "run_project"
+	},
+	{
+		"caption" : "Pem : Open a Project",
+		"command": "open_project"
+	},
+	{
+		"caption" : "Pem : Switch Project",
+		"command": "switch_project"
+	}
+]

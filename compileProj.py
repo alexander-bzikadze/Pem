@@ -2,15 +2,32 @@ import sublime, sublime_plugin, os
 import subprocess
 
 from importlib.machinery import SourceFileLoader
-ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
-ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
-pr = SourceFileLoader("ProjectReader", os.path.join(sublime.packages_path(), "User", "projectReader.py")).load_module()
+ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "Pem", "Staff", "correctnessTests.py")).load_module()
+rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 
 csextension = ".cs"
 
 class CompileProjectCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
-		info = ir.InfoReader()
+	def run(self, edit, target = 0):
+		target = int(target)
+		targetExtension = target
+		if target == 0:
+			target = "exe"
+			targetExtension = ".exe"
+		elif target == 1:
+			target = "library"
+			targetExtension = ".dll"
+		elif target == 2:
+			target = "winexe"
+			targetExtension = ".winexe"
+		elif target == 3:
+			target = "module"
+			targetExtension = ".netmodule"
+		else:
+			print("Wrong target input.")
+			return 0
+
+		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
@@ -24,19 +41,26 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 			print("Project file is not correct.")
 			return 0
 
-		projectReader = pr.ProjectReader()
+		projectReader = rw.ProjectReader()
 		makefile = open(os.path.join(info.getCurrentProjectPath(), "Makefile"), 'w')
 		makefile.write("all:\n")
-		makefile.write("\tcd " + info.getCurrentProjectPath() + '\n')
-		makefile.write("\tmcs")
+		makefile.write("\tcd " + "\ ".join(info.getCurrentProjectPath().split()) + '\n')
+		makefile.write("\t/usr/local/bin/mcs")
 		for file in projectReader.getSource():
-			makefile.write(" " + file + csextension)
-		makefile.write(" -target:exe -out:" + info.getCurrentProject() + ".exe\n")
+			makefile.write(" ./" + "\ ".join(file.split()) + csextension)
+		makefile.write(" -target:" + target + " -out:" + info.getCurrentProject() + targetExtension + "\n")
 		makefile.write('\n')
 		makefile.close()
-		make_process = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-		print(make_process.communicate())
+		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+		if makeProcess.wait():
+			print("Error occured. Following text has come as a error message.")
+			for line in makeProcess.stderr:
+				print(line)
+		print("\nConsole output:")
+		for line in makeProcess.stdout:
+			print(line.strip())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
 
 
-		
+
+
