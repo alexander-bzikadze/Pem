@@ -51,6 +51,16 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 		makefile.write(" -target:" + target + " -out:" + info.getCurrentProject() + targetExtension + "\n")
 		makefile.write('\n')
 		makefile.close()
-		make_process = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-		print(make_process.communicate())
+		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
+		if makeProcess.wait():
+			print("Error occured. Following text has come as a error message.")
+			for line in makeProcess.stderr:
+				print(line)
+		print("\nConsole output:")
+		for line in makeProcess.stdout:
+			print(line.strip())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
+
+
+
+
