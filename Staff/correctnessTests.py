@@ -17,6 +17,8 @@ class CorrectnessTests:
 		return 0
 
 	def __infoFileCreation(self):
+		if not os.path.exists(os.path.join(sublime.packages_path(), "Pem")):
+			os.makedirs(os.path.join(sublime.packages_path(), "Pem"))
 		infoFile = open(self.__infoFilePath, 'w')
 		infoFile.write("-1\n")
 		infoFile.close()

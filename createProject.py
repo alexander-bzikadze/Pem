@@ -25,7 +25,7 @@ class CreateProjectCommand(sublime_plugin.TextCommand):
 		infoWriter.switchProject(rw.InfoReader().getProjectNumber(name))
 
 		if not os.path.exists(path):
-		    os.makedirs(path)
+			os.makedirs(path)
 		projectFile = open(os.path.join(path, name) + ".pem", 'w')
 		projectFile.write("project_name = " + name + '\n\n')
 		projectFile.write("specification:" + "\n\n")

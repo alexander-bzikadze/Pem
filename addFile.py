@@ -31,6 +31,8 @@ class AddFileCommand(sublime_plugin.TextCommand):
 			return 0
 			
 		filePath = os.path.join(os.path.expanduser('~'), info.getCurrentProjectPath(), name + csextension)
+		if not os.path.exists(os.path.dirname(filePath)):
+			os.makedirs(os.path.dirname(filePath))
 		file = open(filePath, 'w')
 		namespace = info.getCurrentProject()
 		file.write("using System;\nusing System.Collections.Generic;\n")

@@ -28,10 +28,10 @@ class InfoReader:
 
 		if len(lines[0].split()) == 3:
 			self.__currentProject = lines[0].split()[1]
-			self.__currentProjectPath = lines[0].split()[2]
+			self.__currentProjectPath = " ".join(lines[0].split()[2].split("\\:"))
 		lines.pop(0)
 		self.__projects = [line.split()[0] for line in lines]
-		self.__projectPaths = [line.split()[1] for line in lines]
+		self.__projectPaths = [" ".join(line.split()[1].split("\\:")) for line in lines]
 
 	def getCurrentProject(self):
 		if not self.__currentProject:
@@ -66,7 +66,7 @@ class InfoWriter:
 		file.close()
 
 		if not name in info.getProjects():
-			lines.append(str(name + " " + path) + "\n")
+			lines.append(str(name + " " + "\\:".join(path.split())) + "\n")
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()
@@ -102,7 +102,7 @@ class InfoWriter:
 			file.close()
 			return 0
 		elif number < len(lines) - 1 and number >= 0:
-			lines[0] = " ".join([str(number + 1), info.getProjects()[number], info.getProjectPaths()[number], '\n'])
+			lines[0] = " ".join([str(number + 1), info.getProjects()[number], "\\:".join(info.getProjectPaths()[number].split()), '\n'])
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()
@@ -136,8 +136,8 @@ class ProjectReader:
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
 			raise Exceptions.ProjectFileNotCorrect("Project file is incorrect.")
 
-		self.__specification = [lines[i][1:len(lines[i]) - 1] for i in range(lines.index("specification:\n") + 1, lines.index("source:\n") - 1) if i]
-		self.__source = [lines[i][1:len(lines[i]) - 1] for i in range(lines.index("source:\n") + 1, len(lines)) if i]
+		self.__specification = [" ".join(lines[i][1:len(lines[i]) - 1].split("\\:")) for i in range(lines.index("specification:\n") + 1, lines.index("source:\n") - 1) if i]
+		self.__source = [" ".join(lines[i][1:len(lines[i]) - 1].split("\\:")) for i in range(lines.index("source:\n") + 1, len(lines)) if i]
 		projectFile.close()
 
 
@@ -167,6 +167,7 @@ class ProjectWriter:
 		projectFile.close()
 
 		if not name in project.getSource():
+			name = "\\:".join(name.split())
 			lines.append('\t' + name + '\n')
 			projectFile = open(projectPath, 'w')
 			projectFile.writelines(lines)
