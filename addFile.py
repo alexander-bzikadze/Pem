@@ -37,6 +37,6 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		namespace = info.getCurrentProject()
 		file.write("using System;\nusing System.Collections.Generic;\n")
 		file.write("\n\n")
-		file.write("namespace " + namespace + "\n{\n\tpublic class " + os.path.basename(filePath) + "\n\t{\n\t\t\n\t}\n}")
+		file.write("namespace " + namespace + "\n{\n\tpublic class " + os.path.basename(filePath[0:len(filePath) - 3]) + "\n\t{\n\t\t\n\t}\n}")
 		file.close()
 		return 0

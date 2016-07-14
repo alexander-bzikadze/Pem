@@ -29,7 +29,13 @@ class RunProjectCommand(sublime_plugin.TextCommand):
 		makefile.write("\tmono " + os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + ".exe"))
 		makefile.close()
 		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
-		print(makeProcess.communicate())
+		if makeProcess.wait():
+			print("Error occured. Following text has come as a error message.")
+			for line in makeProcess.stderr:
+				print(line)
+		print("\nConsole output:")
+		for line in makeProcess.stdout:
+			print(line.strip())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
 
 

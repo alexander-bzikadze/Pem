@@ -57,7 +57,7 @@ class CorrectnessTests:
 		line = lines[0].split()
 		infoFile.close()
 		if len(line) == 1:
-			return str(line) != "-1"
+			return str(lines[0]) != "-1\ns"
 		elif len(line) == 3:
 			if str(line[0]).isdigit():
 				n = int(line[0])
