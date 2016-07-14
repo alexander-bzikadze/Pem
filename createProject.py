@@ -9,6 +9,7 @@ class CreateProjectCommand(sublime_plugin.TextCommand):
 		if name == "-1":
 			print("Cannot have a keyword -1 as a project name")
 			return 0
+		print("!")
 		path = os.path.join(os.path.expanduser('~'), path)
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
