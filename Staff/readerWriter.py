@@ -185,6 +185,7 @@ class ProjectWriter:
 		projectFile.close()
 		if name in project.getSource():
 			os.remove(os.path.join(info.getCurrentProjectPath(), name + csextension))
+			name = "\\:".join(name.split())
 			lines.remove('\t' + name + '\n')
 			projectFile = open(projectPath, 'w')
 			projectFile.writelines(lines)
