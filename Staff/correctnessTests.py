@@ -8,17 +8,19 @@ class CorrectnessTests:
 	__infoFilePath = ""
 
 	def __init__(self):
-		self.__infoFilePath = os.path.join(sublime.packages_path(), "User", "Pem", "Info.txt")
+		self.__infoFilePath = os.path.join(sublime.packages_path(), "Pem", "Info.txt")
 
 	def infoFileExistence(self):
 		if (os.path.isfile(self.__infoFilePath) != True) or (os.stat(self.__infoFilePath).st_size == 0):
-			self.infoFileCreation(self.__infoFilePath)
+			self.__infoFileCreation()
 			return 1
 		return 0
 
 	def __infoFileCreation(self):
+		if not os.path.exists(os.path.join(sublime.packages_path(), "Pem")):
+			os.makedirs(os.path.join(sublime.packages_path(), "Pem"))
 		infoFile = open(self.__infoFilePath, 'w')
-		infoFile.write("-1")
+		infoFile.write("-1\n")
 		infoFile.close()
 
 	def projectSelection(self):

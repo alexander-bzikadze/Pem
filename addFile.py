@@ -2,19 +2,14 @@ import sublime, sublime_plugin, os
 import subprocess
 
 from importlib.machinery import SourceFileLoader
-ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "User", "correctnessTests.py")).load_module()
-ir = SourceFileLoader("InfoReader", os.path.join(sublime.packages_path(), "User", "infoReader.py")).load_module()
-pr = SourceFileLoader("ProjectWriter", os.path.join(sublime.packages_path(), "User", "projectWriter.py")).load_module()
+ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), "Pem", "Staff", "correctnessTests.py")).load_module()
+rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 
-extension = ".pem"
 csextension = ".cs"
-project_name = "project_name = "
-source = "source:"
-specification = "specification:"
 
 class AddFileCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
-		info = ir.InfoReader()
+		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
@@ -30,13 +25,14 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		if cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
 			print("File already exists.")
 			return 0
-
-		projectWriter = pr.ProjectWriter()
+		projectWriter = rw.ProjectWriter()
 		if projectWriter.addFile(name):
 			print("File is already in the project.")
 			return 0
-
-		filePath = os.path.join(info.getCurrentProjectPath(), name + csextension)
+			
+		filePath = os.path.join(os.path.expanduser('~'), info.getCurrentProjectPath(), name + csextension)
+		if not os.path.exists(os.path.dirname(filePath)):
+			os.makedirs(os.path.dirname(filePath))
 		file = open(filePath, 'w')
 		namespace = info.getCurrentProject()
 		file.write("using System;\nusing System.Collections.Generic;\n")
