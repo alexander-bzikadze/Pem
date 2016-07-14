@@ -136,7 +136,7 @@ class ProjectReader:
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
 			raise Exceptions.ProjectFileNotCorrect("Project file is incorrect.")
 
-		self.__specification = [" ".join(lines[i][1:len(lines[i]) - 1].split("\\:")) for i in range(lines.index("specification:\n") + 1, lines.index("source:\n") - 1) if i]
+		self.__specification = [(" ".join(lines[i][1:len(lines[i]) - 1].split("\\:"))).split("=") for i in range(lines.index("specification:\n") + 1, lines.index("source:\n") - 1) if i]
 		self.__source = [" ".join(lines[i][1:len(lines[i]) - 1].split("\\:")) for i in range(lines.index("source:\n") + 1, len(lines)) if i]
 		projectFile.close()
 
@@ -175,6 +175,27 @@ class ProjectWriter:
 			project = ProjectReader()
 			return 0
 		return 1
+
+	def addSpecification(self, type, name):
+		info = InfoReader()
+		project = ProjectReader()
+		projectPath = os.path.join(info.getCurrentProjectPath(), info.getCurrentProject() + extension)
+		projectFile = open(projectPath, 'r')
+		lines = projectFile.readlines()
+		projectFile.close()
+		if type in ["include", "package"]:
+			if not [type, name] in project.getSpecification():
+				name = "\\:".join(name.split())
+				lines.append('\t' + type + "=" + name + '\n')
+				projectFile = open(projectPath, 'w')
+				projectFile.writelines(lines)
+				projectFile.close()
+				project = ProjectReader()
+				return 0
+			return 1
+		raise Exceptions.WrongSpecificationType("Wrong input specification type.")
+
+
 
 	def deleteFile(self, name):
 		info = InfoReader()
