@@ -19,7 +19,7 @@ class DeleteFileCommand(sublime_plugin.TextCommand):
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
 			print("Project file not found or it is empty.")
 			return 0
-		if not cT.fileExistence(name, info.getCurrentProjectPath()):
+		if not cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
 			print("File to delete not found.")
 			return 0
 

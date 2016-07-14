@@ -8,7 +8,25 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 csextension = ".cs"
 
 class CompileProjectCommand(sublime_plugin.TextCommand):
-	def run(self, edit):
+	def run(self, edit, target = 0):
+		target = int(target)
+		targetExtension = target
+		if target == 0:
+			target = "exe"
+			targetExtension = ".exe"
+		elif target == 1:
+			target = "library"
+			targetExtension = ".dll"
+		elif target == 2:
+			target = "winexe"
+			targetExtension = ".winexe"
+		elif target == 3:
+			target = "module"
+			targetExtension = ".netmodule"
+		else:
+			print("Wrong target input.")
+			return 0
+
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
@@ -26,16 +44,13 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 		projectReader = rw.ProjectReader()
 		makefile = open(os.path.join(info.getCurrentProjectPath(), "Makefile"), 'w')
 		makefile.write("all:\n")
-		makefile.write("\tcd " + info.getCurrentProjectPath() + '\n')
-		makefile.write("\tmcs")
+		makefile.write("\tcd " + "\ ".join(info.getCurrentProjectPath().split()) + '\n')
+		makefile.write("\t/usr/local/bin/mcs")
 		for file in projectReader.getSource():
-			makefile.write(" " + file + csextension)
-		makefile.write(" -target:exe -out:" + info.getCurrentProject() + ".exe\n")
+			makefile.write(" ./" + "\ ".join(file.split()) + csextension)
+		makefile.write(" -target:" + target + " -out:" + info.getCurrentProject() + targetExtension + "\n")
 		makefile.write('\n')
 		makefile.close()
 		make_process = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
 		print(make_process.communicate())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
-
-
-		
