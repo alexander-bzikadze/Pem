@@ -6,6 +6,10 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 
 extension = ".pem"
 
+# Deletes project source, projectfile and information from infofile. 
+# You can see the list of checks in code.
+# It is worth mentioning, that first of all switches selection to deleted project.
+# Also uses delete_file command.
 class DeleteProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		if name == "-1":

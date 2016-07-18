@@ -7,6 +7,9 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 extension = ".pem"
 csextension = ".cs"
 
+# Opens all files, connected to the current project.
+# You can see the list of checks in code.
+# Uses switch_project and delete_file commands.
 class OpenProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		if name == "-1":

@@ -7,6 +7,8 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 extension = ".pem"
 csextension = ".cs"
 
+# Deletes file from selected project, if it contains it. Otherwise signals of it.
+# You can see the list of checks in code.
 class DeleteFileCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		info = rw.InfoReader()

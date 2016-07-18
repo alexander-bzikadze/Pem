@@ -6,6 +6,8 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 
 extension = ".pem"
 
+# Prints list of all the files, connected to the selected project.
+# You can see the list of checks in code.
 class GetFilesCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		info = rw.InfoReader()

@@ -7,6 +7,8 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 extension = ".pem"
 csextension = ".cs"
 
+# Opens file, that exist and is mentioned in projectfile.
+# You can see the list of checks in code.
 class OpenFileCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		info = rw.InfoReader()
