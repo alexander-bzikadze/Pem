@@ -7,6 +7,9 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 
 csextension = ".cs"
 
+# Compiles project into chosen target (.exe, .dll, .winexe, .netmodule)
+# Creates makefile, then executes it, then deletes it. Console output is printed.
+# You can see the list of checks in code.
 class CompileProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, target = 0):
 		target = int(target)

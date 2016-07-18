@@ -5,6 +5,9 @@ ct = SourceFileLoader("CorrectnessTests", os.path.join(sublime.packages_path(), 
 rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem", "Staff", "readerWriter.py")).load_module()
 Exceptions = SourceFileLoader("Exceptions", os.path.join(sublime.packages_path(), "Pem", "Staff", "exceptions.py")).load_module()
 
+# Switches project in infofile by name given.
+# Can handle input: -1 or wrong project name.
+# Does not do anything, if name is the same as the current project.
 class SwitchProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		cT = ct.CorrectnessTests()

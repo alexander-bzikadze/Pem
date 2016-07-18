@@ -7,6 +7,7 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 
 csextension = ".cs"
 
+# Adds file to the current project. In the code you can see a list of checks.
 class AddFileCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		info = rw.InfoReader()
