@@ -15,20 +15,20 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		cT.infoFileExistence()
 
 		if cT.projectSelection():
-			print("Project is not selected.")
+			sublime.error_message("Project is not selected.")
 			return 0
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file not found or it is empty.")
+			sublime.error_message("Project file not found or it is empty.")
 			return 0
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file is not correct.")
+			sublime.error_message("Project file is not correct.")
 			return 0
 		if cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
-			print("File already exists.")
+			sublime.error_message("File already exists.")
 			return 0
 		projectWriter = rw.ProjectWriter()
 		if projectWriter.addFile(name):
-			print("File is already in the project.")
+			sublime.error_message("File is already in the project.")
 			return 0
 			
 		filePath = os.path.join(os.path.expanduser('~'), info.getCurrentProjectPath(), name + csextension)
@@ -40,4 +40,3 @@ class AddFileCommand(sublime_plugin.TextCommand):
 		file.write("\n\n")
 		file.write("namespace " + namespace + "\n{\n\tpublic class " + os.path.basename(filePath[0:len(filePath) - 3]) + "\n\t{\n\t\t\n\t}\n}")
 		file.close()
-		return 0

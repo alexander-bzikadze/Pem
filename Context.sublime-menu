@@ -1,0 +1,87 @@
+[
+	{
+		"id" : "pem",
+		"caption" : "Pem",
+		"command" : "pem",
+		"args" : {"args" : ""}
+	},
+	{
+		"id" : "Pem Folder",
+		"caption" : "Pem Commands",
+		"children" :
+		[
+			{
+				"id" : "add_file",
+				"caption" : "Add file",
+				"command" : "pem",
+				"args" : {"args" : "add_file"}
+			},
+			{
+				"id" : "run_project",
+				"caption" : "Run project",
+				"command" : "pem",
+				"args" : {"args" : "run_project"}
+			},
+			{
+				"id" : "compile_project",
+				"caption" : "Compile project",
+				"command" : "pem",
+				"args" : {"args" : "compile_project"}
+			},
+			{
+				"id" : "create_project",
+				"caption" : "Create project",
+				"command" : "pem",
+				"args" : {"args" : "create_project"}
+			},
+			{
+				"id" : "delete_file",
+				"caption" : "Delete file",
+				"command" : "pem",
+				"args" : {"args" : "delete_file"}
+			},
+			{
+				"id" : "delete_project",
+				"caption" : "Delete project",
+				"command" : "pem",
+				"args" : {"args" : "delete_project"}
+			},
+			{
+				"id" : "get_files",
+				"caption" : "Print list of files",
+				"command" : "pem",
+				"args" : {"args" : "get_files"}
+			},
+			{
+				"id" : "get_projects",
+				"caption" : "Print list of all projects",
+				"command" : "pem",
+				"args" : {"args" : "get_all_proj"}
+			},
+			{
+				"id" : "info",
+				"caption" : "Print info of current project",
+				"command" : "pem",
+				"args" : {"args" : "info"}
+			},
+			{
+				"id" : "switch_project",
+				"caption" : "Switch project",
+				"command" : "pem",
+				"args" : {"args" : "switch_project"}
+			},
+			{
+				"id" : "open_file",
+				"caption" : "Open file",
+				"command" : "pem",
+				"args" : {"args" : "open_file"}
+			},
+			{
+				"id" : "open_project",
+				"caption" : "Open project",
+				"command" : "pem",
+				"args" : {"args" : "open_project"}
+			},
+		]
+	}
+]

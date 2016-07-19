@@ -10,7 +10,8 @@ class InfoCommand(sublime_plugin.TextCommand):
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
+
 		if not cT.projectSelection():
-			print(info.getCurrentProject() + " " + info.getCurrentProjectPath())
+			sublime.message_dialog(" ".join([info.getCurrentProject(), info.getCurrentProjectPath()]))
 		else:
-			print("No project selected.")
+			sublime.error_message("No project selected.")

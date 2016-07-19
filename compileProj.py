@@ -27,21 +27,22 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 			target = "module"
 			targetExtension = ".netmodule"
 		else:
-			print("Wrong target input.")
+			sublime.error_message("Wrong target input.")
 			return 0
 
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
+		printBuf = ["Command result (might be empty):"]
 
 		if cT.projectSelection():
-			print("Project is not selected.")
+			sublime.error_message("Project is not selected.")
 			return 0
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file not found or it is empty.")
+			sublime.error_message("Project file not found or it is empty.")
 			return 0
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file is not correct.")
+			sublime.error_message("Project file is not correct.")
 			return 0
 
 		projectReader = rw.ProjectReader()
@@ -56,13 +57,15 @@ class CompileProjectCommand(sublime_plugin.TextCommand):
 		makefile.close()
 		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
 		if makeProcess.wait():
-			print("Error occured. Following text has come as a error message.")
+			printBuf.append("Error occured. Following text has come as a error message.")
 			for line in makeProcess.stderr:
-				print(line)
-		print("\nConsole output:")
+				printBuf.append(line.strip())
+		printBuf.append("\nConsole output:")
 		for line in makeProcess.stdout:
-			print(line.strip())
+			printBuf.append(line.strip())
 		os.remove(os.path.join(info.getCurrentProjectPath(), "Makefile"))
+		sublime.message_dialog("\n".join([str(i) for i in printBuf]))
+
 
 
 

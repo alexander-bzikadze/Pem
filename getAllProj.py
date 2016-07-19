@@ -11,8 +11,12 @@ class GetAllProjCommand(sublime_plugin.TextCommand):
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
+		printBuf = ["Command result (might be empty):"]
+		
 		if cT.infoFileCorrectnessHard():
-			print("Prepare yourself. Incorrect info-file is coming.")
+			sublime.error_message("Prepare yourself. Incorrect info-file is coming.")
 
 		for project in info.getProjects():
-			print(project)
+			printBuf.append(project)
+
+		sublime.message_dialog("\n".join([str(i) for i in printBuf]))

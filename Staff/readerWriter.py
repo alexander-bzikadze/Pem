@@ -41,7 +41,6 @@ class InfoReader:
 	# Throws ProjectNotSelectedException, if project not selected. 
 	def getCurrentProject(self):
 		if not self.__currentProject:
-			print(self.__currentProject)
 			raise Exceptions.ProjectNotSelectedException("No project selected.")
 		return self.__currentProject
 
@@ -101,6 +100,9 @@ class InfoWriter:
 
 		if number < len(lines) - 1 and number >= 0:
 			lines.pop(number + 1)
+			if lines[0] != "-1\n":
+				number = lines.index(" ".join(info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n']))
+				lines[0] = " ".join(number, info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n'])
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()

@@ -13,17 +13,19 @@ class GetFilesCommand(sublime_plugin.TextCommand):
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
+		printBuf = ["Command result (might be empty):"]
 
 		if cT.projectSelection():
-			print("Project is not selected.")
+			sublime.error_message("Project is not selected.")
 			return 0
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file not found or it is empty.")
+			sublime.error_message("Project file not found or it is empty.")
 			return 0
 		if cT.projectFileCorrectness(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file is not correct.")
+			sublime.error_message("Project file is not correct.")
 			return 0
 
 		projectReader = rw.ProjectReader()
 		for file in projectReader.getSource():
-			print(file)
+			printBuf.append(file)
+		sublime.message_dialog("\n".join([str(i) for i in printBuf]))

@@ -69,7 +69,7 @@ class CorrectnessTests:
 		line = lines[0].split()
 		infoFile.close()
 		if len(line) == 1:
-			return str(lines[0]) != "-1\ns"
+			return str(lines[0]) != "-1\n"
 		elif len(line) == 3:
 			if str(line[0]).isdigit():
 				n = int(line[0])
@@ -90,13 +90,12 @@ class CorrectnessTests:
 		projectsThatDoesNotExist = []
 		if (self.infoFileCorrectnessLite()):
 			return self.infoFileCorrectnessLite()
-		if str(lines[0].split()[0]).isdigit():
-			for i in range(1, len(lines)):
-				if len(lines[i].split()) != 2:
-					linesWithFails += i
-				else:
-					if self.projectFileExistence(lines[i].split()[0], lines[i].split()[1]):
-						projectsThatDoesNotExist += i
+		for i in range(1, len(lines)):
+			if len(lines[i].split()) != 2 and lines[i]:
+				linesWithFails.append(i)
+			else:
+				if self.projectFileExistence(lines[i].split()[0], lines[i].split()[1]):
+					projectsThatDoesNotExist.append(i)
 		if (len(linesWithFails)):
 			return 5
 		if (len(projectsThatDoesNotExist)):

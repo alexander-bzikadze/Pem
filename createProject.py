@@ -9,20 +9,21 @@ rw = SourceFileLoader("ReaderWriter", os.path.join(sublime.packages_path(), "Pem
 class CreateProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name, path = os.path.expanduser('~')):
 		if name == "-1":
-			print("Cannot have a keyword -1 as a project name")
+			sublime.error_message("Cannot have a keyword -1 as a project name")
 			return 0
+			
 		path = os.path.join(os.path.expanduser('~'), path)
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
 		cT.infoFileExistence()
 
 		if cT.fileExistence(name + ".pem", path):
-			print("Project path is already busy.")
+			sublime.error_message("Project path is already busy.")
 			return 0
 
 		infoWriter = rw.InfoWriter()
 		if infoWriter.addProject(name, path):
-			print("Project already exists.")
+			sublime.error_message("Project already exists.")
 			return 0
 		infoWriter.switchProject(rw.InfoReader().getProjectNumber(name))
 

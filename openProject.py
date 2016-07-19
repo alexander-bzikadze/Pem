@@ -13,8 +13,9 @@ csextension = ".cs"
 class OpenProjectCommand(sublime_plugin.TextCommand):
 	def run(self, edit, name):
 		if name == "-1":
-			print("Cannot open nothing.")
+			sublime.error_message("Cannot open nothing.")
 			return 0
+			
 		self.view.run_command("switch_project", {"name" : name})
 		info = rw.InfoReader()
 		cT = ct.CorrectnessTests()
@@ -27,7 +28,7 @@ class OpenProjectCommand(sublime_plugin.TextCommand):
 			# print ("No such project.")
 			return 0
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file not found or it is empty.")
+			sublime.error_message("Project file not found or it is empty.")
 			return 0
 
 		projectReader = rw.ProjectReader()

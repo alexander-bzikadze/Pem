@@ -16,15 +16,15 @@ class DeleteFileCommand(sublime_plugin.TextCommand):
 		cT.infoFileExistence()
 
 		if cT.projectSelection():
-			print("Project is not selected.")
+			sublime.error_message("Project is not selected.")
 			return 0
 		if cT.projectFileExistence(info.getCurrentProject(), info.getCurrentProjectPath()):
-			print("Project file not found or it is empty.")
+			sublime.error_message("Project file not found or it is empty.")
 			return 0
 		if not cT.fileExistence(name + csextension, info.getCurrentProjectPath()):
-			print("File to delete not found.")
+			sublime.error_message("File to delete not found.")
 			return 0
 
 		projectWriter = rw.ProjectWriter()
 		if projectWriter.deleteFile(name):
-			print("No such file", name, "in", info.getCurrentProject(), ".")
+			sublime.error_message(" ".join("No such file ", name, "in", info.getCurrentProject(), "."))

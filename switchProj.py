@@ -26,4 +26,4 @@ class SwitchProjectCommand(sublime_plugin.TextCommand):
 			try:
 				infoWriter.switchProject(infoReader.getProjectNumber(name))
 			except Exceptions.ProjectAbsenceInInfofile:
-				print("No such project", name, ".")
+				sublime.error_message("No such project " + name + ".")
