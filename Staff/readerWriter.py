@@ -101,8 +101,11 @@ class InfoWriter:
 		if number < len(lines) - 1 and number >= 0:
 			lines.pop(number + 1)
 			if lines[0] != "-1\n":
-				number = lines.index(" ".join(info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n']))
-				lines[0] = " ".join(number, info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n'])
+				if info.getCurrentProject() != info.getProjects()[number]:
+					number = lines.index(" ".join([info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n']))
+					lines[0] = " ".join([number, info.getCurrentProject(), "\\:".join(info.getCurrentProjectPath().split()), '\n'])
+				else:
+					lines[0] = "-1\n"	
 			file = open(infoFilePath, "w")
 			file.writelines(lines)
 			file.close()
