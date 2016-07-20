@@ -29,7 +29,7 @@ class RunProjectCommand(sublime_plugin.TextCommand):
 
 		makefile = open(os.path.join(info.getCurrentProjectPath(), "Makefile"), 'w')
 		makefile.write("all:\n")
-		makefile.write("\t/usr/local/bin/mono " + info.getCurrentProject() + ".exe <input.txt")
+		makefile.write("\t/usr/local/bin/mono " + info.getCurrentProject() + ".exe")
 		makefile.close()
 		makeProcess = subprocess.Popen(["make", "-C", info.getCurrentProjectPath()], stdout=subprocess.PIPE, stderr = subprocess.PIPE)
 		if makeProcess.wait():
